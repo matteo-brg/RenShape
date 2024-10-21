@@ -27,7 +27,8 @@
    $ createLazy.py -lp lazy_path -jp jeff_path -esp ensdf_path -ep endfb_path -bp betashape_path -fix 1 
    ```   
 
-   **parameters:** --note ('')
+   **parameters:** 
+   
    -lp : string. Path where the .lazy file will be created. example: -lp home/cavolo.lazy. Default is None
 
    -jp : string. Path to the jeff database. Default is None.
