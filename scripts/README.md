@@ -29,14 +29,24 @@
 
    **parameters:** --note ('')
    -lp : string. Path where the .lazy file will be created. example: -lp home/cavolo.lazy. Default is None
+
    -jp : string. Path to the jeff database. Default is None.
+
    -jr : string. Optional. Version for Jeff. example: -jr 3.3. Defailt is None.
+
    -br : string. Optional. Version for BetaShape. example: -br 2.4. Default is None.
+
    -esp : string. Path to the ENSDF folder. Inside it, multiple .ensdf files are expected. Default is None.
+
    -ep : string. Path to the ENSDF/B sub-library. Default is None.
+
    -bp : string. Path to BetaShape directory. example: -bp home/BetaShape/betashape_rightversion. Default is None.
+
    -bo : string. Path for the temporary BetaShape output (where the dummyfolder101 will be created). See BetaShape tutorial for more details. If None, the current location will be used. Default is None.
+
    -bc : string. Option for BetaShape. See BetaShape manual for more details. "myEstep" and "nu" are required. Default is "myEstep=1 nu =1".
+
    -fix : int. Use ENSDF database to fix missing/continuum data. Default is 1.
+   
    -ovr : int. Overwrite existing data. Default is 1.
 
