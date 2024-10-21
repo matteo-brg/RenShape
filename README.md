@@ -17,7 +17,7 @@ For more information about the software, please take a look at the RenShape tuto
    ```
    or Clone with HTTPS using the web URL
    ```
-   $ git clone https://github.com/matteo-brg/lazyspectra.git
+   $ git clone https://github.com/matteo-brg/RenShape
    ```
 
 2. Install virtualenv using `python >= 3.8`
@@ -70,12 +70,13 @@ For more information about the software, please take a look at the RenShape tuto
 
 ### Project top-level directory layout
 
-    baynes
+    RenShape
     │
     ├── src                            # Project source code
     ├── scripts                        # Directory for scripts and executables
     ├── notebook                       # Directory for tutorials
     ├── requirements.txt               # Lists of packages to install
+    ├── data                           # Directory for data
     ├── setup.py                       #
     ├── .gitignore                     # Specifies intentionally untracked files to ignore
     └── README.md                      # README file
