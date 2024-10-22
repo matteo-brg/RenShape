@@ -11,7 +11,7 @@
 
    Unpack the txt file
    ```
-   $ unpackENSDF.py -f Selected_ENSDF_Datasets -o output/directory/where_the_data_will_be_saved 
+   $ unpackENSDF.py -f data/SelectedENSDFDataset -o data/ENSDF
    ```   
 
 
@@ -24,22 +24,22 @@
 
 
    ```
-   $ createLazy.py -lp lazy_path -jp jeff_path -esp ensdf_path -ep endfb_path -bp betashape_path -fix 1 
+   $ createLazy.py -lp data/cavolo.lazy -jp data/JEFF33-nfy.txt -esp data/ENSDF -ep data/endfb-bm.txt -bp betashape_path -fix 1 
    ```   
 
    **parameters:** 
    
-   -lp : string. Path where the .lazy file will be created. example: -lp home/cavolo.lazy. Default is None
+   -lp : string. Path where the .lazy file will be created. example: -lp data/cavolo.lazy. Default is None
 
-   -jp : string. Path to the jeff database. Default is None.
+   -jp : string. Path to the jeff database. example: data/JEFF33-nfy.txt Default is None.
 
    -jr : string. Optional. Version for Jeff. example: -jr 3.3. Defailt is None.
 
    -br : string. Optional. Version for BetaShape. example: -br 2.4. Default is None.
 
-   -esp : string. Path to the ENSDF folder. Inside it, multiple .ensdf files are expected. Default is None.
+   -esp : string. Path to the ENSDF folder. Inside it, multiple .ensdf files are expected. example: data/ENSDF. Default is None.
 
-   -ep : string. Path to the ENSDF/B sub-library. Default is None.
+   -ep : string. Path to the ENSDF/B sub-library. example: data/endfb-bm.txt. Default is None.
 
    -bp : string. Path to BetaShape directory. example: -bp home/BetaShape/betashape_rightversion. Default is None.
 
