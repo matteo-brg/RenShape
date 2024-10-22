@@ -23,7 +23,7 @@ setup( # Finally, pass this all along to distutils to do the heavy lifting.
     long_description = read('README.md'),
     author           = ' ',
     author_email     = ' ',
-    url              = 'https://github.com/matteo-brg/lazyspectra.git',
+    url              = 'https://github.com/matteo-brg/RenShape',
 #    license          = read('LICENSE'),
     install_requires = read('requirements.txt').splitlines(),
     package_dir      = {'': 'src'},
