@@ -1,6 +1,6 @@
 # RenShape
 
-`<img src="https://raw.githubusercontent.com/matteo-brg/RenShape/refs/heads/master/RenShape_logo.png?token=GHSAT0AAAAAACZJETIBOMQ7Z757MMBD4EOEZYXSTFQ">`
+<img src="https://raw.githubusercontent.com/matteo-brg/RenShape/refs/heads/master/RenShape_logo.png?token=GHSAT0AAAAAACZJETIBOMQ7Z757MMBD4EOEZYXSTFQ">
 
 **RenShape** (Reactor (anti)Neutrino spectral Shape) is a tool for evaluating the antineutrino spectrum from reactors using the summation method.
 
