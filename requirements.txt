@@ -5,3 +5,5 @@ numpy
 pandas
 periodictable
 scipy
+uncertainties
+jupyterlab
