@@ -14,7 +14,6 @@ For more information about the software, please take a look at the RenShape tuto
 ### Installation
 
 1. Open the terminal and clone the repository locally:
-   Clone using a password protected SSH key (preferred)
 
    ```
    $ git clone 
