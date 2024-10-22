@@ -394,7 +394,7 @@ class LazyReader:
                            ffs = [0.564,0.076,0.304,0.056], ffs_unc = None, do_sum = True,
                            spectra=None,spectra_er=None,posOK=None):
 
-       '''
+        '''
         Return the neutrino spectrum with its uncertainty given the fission fractions.
         
         Parameters
