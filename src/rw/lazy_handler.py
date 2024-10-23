@@ -381,7 +381,7 @@ class LazyReader:
           
         if force_normalization is True:
             for i in range(spectra.shape[0]):
-                I = integrate.simps(spectra[i],energy)
+                I = integrate.simpson(spectra[i],x=energy)
                 if I >= thr_norm:
                     spectra[i] = spectra[i]/I
                     spectra_er[i] = spectra_er[i]/I        
