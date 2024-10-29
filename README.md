@@ -6,20 +6,16 @@
 
 The (anti) neutrino spectra are evaluated using BetaShape (http://www.lnhb.fr/home/rd-activities/spectrum-processing-software/).
 
-You can choose to use the database already compiled ("verza.lazy", October 2024), or compile your own.
+You can choose to use the database already compiled ("verza.lazy", October 2024, https://drive.google.com/file/d/1Awtt-ilh9Kdhl4fWJbK4zUgzToc6pqsG/view?usp=sharing. Soon on Zenodo!), or compile your own.
 For the latter, please refer to the README.md in the script folder.
 
 For more information about the software, please take a look at the RenShape tutorial in the notebook folder.
 
+If you want to collaborate or report any bugs, don't esitate to cantact us! (matteo.borghesi@mib.infn.it)
+
 ### Installation
 
 1. Open the terminal and clone the repository locally:
-
-   ```
-   $ git clone 
-   ```
-
-   or Clone with HTTPS using the web URL
 
    ```
    $ git clone https://github.com/matteo-brg/RenShape
