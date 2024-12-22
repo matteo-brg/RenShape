@@ -134,8 +134,8 @@ def main():
 
     parser.add_argument("-lp", "--lazy_path"   , dest="lazy"   , type=str , help="path to the lazy file to write", default = None, required = True)
     parser.add_argument("-jp", "--jeff_path"   , dest="jeff"   , type=str , help="path to the jeff file", default = None, required = False)
-    parser.add_argument("-jr", "--jeff_release"   , dest="jeff_r"   , type=str , help="jeff release", default = None, required = False)
-    parser.add_argument("-br", "--betashape_release"   , dest="beta_r"   , type=str , help="betashape release", default = None, required = False)
+    parser.add_argument("-jr", "--jeff_release"   , dest="jeff_r"   , type=str , help="jeff release", default = "", required = False)
+    parser.add_argument("-br", "--betashape_release"   , dest="beta_r"   , type=str , help="betashape release", default = "", required = False)
     parser.add_argument("-esp", "--ensdf_path"   , dest="ensdf"   , type=str , help="path to the ensdf folder", default = None, required = False)
     parser.add_argument("-ep", "--endf_path"   , dest="endf"   , type=str , help="path to the endf-B sub-library file", default = None, required = False)
     parser.add_argument("-bp", "--betashape_path"   , dest="betashape"   , type=str , help="path to betashape directory", default = None, required = False)
@@ -143,6 +143,8 @@ def main():
     parser.add_argument("-bc", "--betashape_config"   , dest="betashape_config"   , type=str , help="input parameters for betashape", default = "myEstep=1 nu=1", required = False)
     parser.add_argument("-fix", "--ensdf_fix"   , dest="fix"   , type=int , help="try to fix the missing/theoretical spectra", default = 1, required = False)
     parser.add_argument("-ovr", "--overwrite"   , dest="overwrite"   , type=int , help="overwrite existing data", default = 1, required = False)
+    parser.add_argument("-t", "--type"   , dest="type"   , type=str , help="select data_beta for evaluating the electron spectra or data_nu for evaluating the neutrino spectra", default = "data_nu", required = False)
+
         
     args = parser.parse_args()    
     overwrite = bool(args.overwrite)
@@ -259,7 +261,7 @@ def main():
                 res_diz = CmdBEtashape.evaluate_decay(dic,boptions=args.betashape_config)
                 
                 res_list = res_diz[0]  #FIXME
-                dizio = CmdBEtashape.convert_output_into_dic(res_list)
+                dizio = CmdBEtashape.convert_output_into_dic(res_list,tipo=args.type)
                 
                 bu.log("Writing data...",level=2)
                 LW.write_nuclide_data(nuclide_name = nuc["lazy_name"],dtype="data",dictionary=dizio)
@@ -322,7 +324,7 @@ def main():
                     
                     if metastable in res_diz.keys():                      
                         res_list = res_diz[metastable]  #FIXME
-                        dizio = CmdBEtashape.convert_output_into_dic(res_list)
+                        dizio = CmdBEtashape.convert_output_into_dic(res_list,tipo=args.type)
                         bu.log("Writing data...",level=4)
                         LW.write_nuclide_data(nuclide_name = nuc["lazy_name"],dtype="data",dictionary=dizio)
                         LW.write_nuclide_data(nuclide_name = nuc["lazy_name"],dtype="info",vname="tag", vvalue = "ensdf") 
@@ -348,7 +350,7 @@ def main():
                     
                     if metastable in res_diz.keys():                      
                         res_list = res_diz[metastable]  #FIXME
-                        dizio = CmdBEtashape.convert_output_into_dic(res_list)
+                        dizio = CmdBEtashape.convert_output_into_dic(res_list,tipo=args.type)
                         bu.log("Writing data...",level=4)
                         LW.write_nuclide_data(nuclide_name = nuc["lazy_name"],dtype="data",dictionary=dizio)
                         LW.write_nuclide_data(nuclide_name = nuc["lazy_name"],dtype="info",vname="tag", vvalue = "ensdf") 
