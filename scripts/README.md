@@ -20,12 +20,12 @@
 
 1. Create a database for RenShape. BetaShape must be installed in your system.
 
-   Download the latest cumulative fission yields from the JEFF database (https://www.oecd-nea.org/dbdata/jeff/jeff33/ , Neutron Induced Fission Product Yields).
+   Download the latest cumulative fission yields from the JEFF database (https://databank.io.oecd-nea.org/data/jeff/40/ , Neutron Induced Fission Product Yields).
 
    Download the ENSDF data and unpack it (see previous script).
 
    ```
-   $ createLazy.py -lp data/cavolo.lazy -jp data/JEFF33-nfy.txt -esp data/ENSDF -ep data/endfb-bm.txt -bp betashape_path -fix 1 
+   $ createLazy.py -lp data/cavolo.lazy -jp data/JEFF40-nfy -ap data/AME20.txt -esp data/ENSDF -ep data/endfb-bm.txt -bp betashape_path -fix 1 
    ```
    **parameters:**
 
@@ -33,9 +33,11 @@
 
    -jp : string. Path to the jeff database. example: data/JEFF33-nfy.txt Default is None.
 
-   -jr : string. Optional. Version for Jeff. example: -jr 3.3. Defailt is "".
+   -jr : string. Optional. Version for Jeff. example: -jr 4.0. Defailt is "".
 
    -br : string. Optional. Version for BetaShape. example: -br 2.4. Default is "".
+
+   -ap : string. Path to the AME2020 evaluation file. example: data/AME20.txt . Default is None.
 
    -esp : string. Path to the ENSDF folder. Inside it, multiple .ensdf files are expected. example: data/ENSDF. Default is None.
 

@@ -7,3 +7,4 @@ periodictable
 scipy
 uncertainties
 jupyterlab
+iminuit

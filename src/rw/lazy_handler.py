@@ -123,6 +123,7 @@ class LazyReader:
         
     def __init__(self, path_file):
         self._file = path_file
+        self._Emax = None
         
     def __check_exist(self,path=None,group_name = None):
 
@@ -211,7 +212,7 @@ class LazyReader:
                 temp = temp.astype(str)
         return temp
         
-    def get_data(self,name="dN_dE_tot", group_path="nuclides",sub_group = "data",E_min = 0, E_max = 12000,E_step = None):
+    def get_data(self,name="dN_dE_tot", group_path="nuclides",sub_group = "data", E_max = None,E_step = None):
         """
         Return the arrays labeled as *name* present in the dataset. The arrays are zero-padded and re-arranged 
         as matrix.
@@ -225,10 +226,9 @@ class LazyReader:
             Group name where the parameter is saved. Default is "nuclides".
         sub_group : string
             Sub-group where the parameter is saved. Default is "data".
-        E_min : float
-            The lowest energy for each spectrum in keV. Default is 0.
         E_max : float
-            The highest energy for each spectrum in keV. Default is 12000.   
+            The highest energy for each spectrum in keV. If None, the maximum energy amongst 
+            all spectra will be taken. Default is None.   
         E_step : float
             The energy step for each spectrum. If None, the value is taken from the header
             of the dataset. Default is None.
@@ -249,10 +249,11 @@ class LazyReader:
         """
         if E_step is None:
             E_step = self.get_info()["E_step"]
-            
+        if E_max is None:
+            E_max = np.max(self.get_parameters("Emax")) + E_step
+            self._Emax = E_max
         energies = np.arange(0,E_max,step=E_step) #energy in the dataset
-        pos_min, pos_max = np.where((energies>=E_min)&(energies<=E_max))[0][[0,-1]]
-        data_lenght = int(pos_max-pos_min)
+        data_lenght = len(energies)
         with h5py.File(self._file,'r') as f:
             temp = []
             pos_ok = []
@@ -266,11 +267,9 @@ class LazyReader:
                     pos_notok.append(i)
                     i+=1
                     continue
-                value = value[pos_min:pos_max+1]
-                value = np.append(value,np.zeros(data_lenght-len(value)+1))  
+                value = np.append(value,np.zeros(data_lenght-len(value)))  
                 temp.append(value)
                 i+=1
-        energies = energies[pos_min:pos_max+1]
         data = np.array(temp)
         pos_ok = np.array(pos_ok)
         pos_notok = np.array(pos_notok)
@@ -292,7 +291,7 @@ class LazyReader:
             dic1['lazy_name'] = nuclide_name
         return dic1
         
-    def _evaluate_total_spectrum(self,loc,thr=0.2):
+    def _evaluate_total_spectrum(self,loc,thr=0.5):
         """
         Return the neutrino spectrum from the neuclide in loc position.
         The uncertainty is given considering also the uncertainty on the BRs.
@@ -308,8 +307,10 @@ class LazyReader:
             unc_BR.append(base_utilities.short_to_std(nuc["transition_intensity"][i],nuc["transition_unc_intensity"][i]))
         unc_BR = np.array(unc_BR)
 
-        #substitute the BR with unknown uncertainty with an uncertainty equal to thr*BR
-        ii = np.where(unc_BR==None)[0]
+        #substitute the BR with unknown uncertainty(=0 or = None) with an uncertainty equal to thr*BR
+        ii1 = np.where(unc_BR==None)[0]
+        ii2 = np.where(unc_BR==0)[0]
+        ii = np.unique(np.append(ii1,ii2))
         unc_BR[ii] = nuc["transition_intensity"][ii]*thr
     
         y_er2 = np.sum( ((y.T*unc_BR).T)**2 + ((y_er.T*nuc["transition_intensity"]).T)**2, axis=0)**0.5
@@ -317,17 +318,16 @@ class LazyReader:
         return np.sum((nuc["transition_dN_dE"]),axis=0),y_er2
         
         
-    def get_nu_spectra(self,E_min = 0, E_max=12e3, unc_BR = True, default_unc = 0.2, 
-                       force_normalization=True,thr_norm=0.99):
+    def get_nu_spectra(self, E_max=None, unc_BR = True, default_unc = 0.2, 
+                       force_normalization=True):
         '''
         Return the neutrino spectra of the nuclides in the dataset with their uncertainties.
         
         Parameters
         ----------
-        E_min : float
-            The lowest energy for each spectrum in keV. Default is 0.
         E_max : float
-            The highest energy for each spectrum in keV. Default is 12000.   
+            The highest energy for each spectrum in keV. If None, the maximum energy amongst 
+            all spectra will be taken. Default is None.   
         unc_BR : bool
             Evaluate the uncertanties for each spectrum considering also the branching 
             ratio uncertanties. Default is True.
@@ -335,10 +335,9 @@ class LazyReader:
             If a nuclide does not have uncertanties or one of its levels do not have a known error, default_unc
             is used as percentage error instead. Default is 0.2.
         force_normalization : bool
-            If True, each spectrum with an integral value greater than *thr_norm* will be normalized to one.
+            If True, the best shape will be selected and the appropriate normalization will be applied 
+            for each spectrum.
             Default is True.
-        thr_norm : float
-            Only if force_normalization is True. Default is 0.99.
             
         Returns
         -------
@@ -357,8 +356,8 @@ class LazyReader:
         
         '''
     
-        spectra, energy, posOK, posnotOK = self.get_data("dN_dE_tot",E_min = E_min, E_max=E_max)
-    
+        spectra, energy, posOK, posnotOK = self.get_data("dN_dE_tot",E_max=E_max)
+        E_max = self._Emax
         if unc_BR is False:
             spectra_er, _, _, _ = self.get_data("unc_dN_dE",E_min = E_min, E_max=E_max)
         
@@ -371,7 +370,7 @@ class LazyReader:
             i = 0
             for p in posOK:
                 try:
-                    _, temp = self._evaluate_total_spectrum(self,p,thr=default_unc)
+                    _, temp = self._evaluate_total_spectrum(self,p)
                     temp = temp[:spectra.shape[1]]  
                 except:
                     #if the uncertainty is unkwnown, use the defalt_unc
@@ -380,18 +379,24 @@ class LazyReader:
                 i += 1
           
         if force_normalization is True:
-            for i in range(spectra.shape[0]):
+            BR = self.get_parameters("BR",variable_not_found=1) #get the correct normalization factor for each nuclides
+            BR = BR[posOK]  
+            #force the normalization for the spectrum with all the information
+            tags = self.get_parameters("tag")
+            pos_incomplete = np.where(posOK==np.array([np.where(tags=="ensdf_incomplete")[0]]).T)[1]      
+            pos_complete = np.uint32(np.where(np.in1d(np.arange(spectra.shape[0]),pos_incomplete,invert = True))[0])
+            
+            for i in pos_complete:
                 I = integrate.simpson(spectra[i],x=energy)
-                if I >= thr_norm:
-                    spectra[i] = spectra[i]/I
-                    spectra_er[i] = spectra_er[i]/I        
+                spectra[i] = BR[i]*(spectra[i]/I)
+                spectra_er[i] = BR[i]*spectra_er[i]/I        
     
         return energy, spectra, spectra_er, posOK, posnotOK
      
 
     def get_total_spectrum(self,labels=["cumulative_thermal_fy_235u","cumulative_thermal_fy_239Pu","cumulative_thermal_fy_241Pu","cumulative_fast_fy_238u"],
                            labels_unc=["unc_ct_235u","unc_ct_239Pu","unc_ct_241Pu","unc_cf_238u"],
-                           ffs = [0.564,0.076,0.304,0.056], ffs_unc = None, do_sum = True,
+                           ffs = [1,1,1,1], ffs_unc = None, do_sum = True,
                            spectra=None,spectra_er=None,posOK=None):
 
         '''
@@ -409,7 +414,11 @@ class LazyReader:
         ffs_unc : list of float or None
             Uncertainties for the fission fraction. If None, no uncertainty is used. Default is None.
         do_sum : bool
-            If True, sum all the spectra to return the total antineutrino spectrum. Otherwise return a matrix. Default is True.
+            If True, all spectra are summed to return the total antineutrino spectrum. In this case, spectrum_err 
+            represents the standard deviation. If False, a matrix is returned. spectrum is a matrix in which each row 
+            represents an antineutrino spectrum multiplied by the corresponding CFY and fission fractions. 
+            spectrum_err contains the variance for each spectrum.
+            The default is True.
         spectra : ndarray
             The matrix containing all the spectra to be combined. It should be the output of "get_nu_spectra". Default is None.
         spectra_er : ndarray

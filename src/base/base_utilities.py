@@ -1,6 +1,6 @@
 '''
  Author: Matteo Borghesi <matteo.borghesi@mib.infn.it>
- Desc  : Collection of utilities used (?) in other codes 
+ Desc  : Collection of simple utilities used (?) in other codes 
 '''
 
 import os, errno
@@ -8,6 +8,7 @@ from operator import methodcaller
 import numpy as np
 import string
 import uncertainties
+import re
 
 class Config2Dict(object):
     '''
@@ -151,14 +152,14 @@ class ShorthandFormatter(string.Formatter):
             return super(ShorthandFormatter, self).format_field(
                 value, format_spec)
                 
-
+'''
 def std_to_shorthand(number,std):
-    '''
+
     Given a value as number +/- std, this function returns 
     the shorthand notation as required by the ensdf data format
     value(unc)
     (see ensdf manual)
-    '''
+
     digit=2
     frmtr = ShorthandFormatter()
     x=uncertainties.ufloat(number,std)
@@ -182,7 +183,33 @@ def std_to_shorthand(number,std):
     if len(unc) > 2:
         unc = unc[:unc.find(".")]
         
+    #remove anything other than the number
+    unc = re.findall(r'\d+', unc)[0]
     return value, unc 
+'''
+
+def std_to_shorthand(number,std):
+    '''
+    Given a value as number +/- std, this function returns 
+    the shorthand notation as required by the ensdf data format
+    value(unc)
+    (see ensdf manual)
+    '''
+    x =uncertainties.ufloat(number,std)
+    digit = 2
+    frmtr = ShorthandFormatter()
+    out = frmtr.format("{0:."+str(digit)+"u}", x)
+    p1 = out.find("(")
+    p2 = out.find(")")
+    value = out[:p1]+out[p2+1:]
+    p3 = value.find(".")
+    if p3!=-1:
+        if len(value[p3+1:])==1:
+            value = str(int(np.round(float(value))))
+    unc = out[p1+1:p2]
+    unc = str(int(np.round(float(unc))))
+    return value, unc
+    
 
 
 def short_to_std(number,short):

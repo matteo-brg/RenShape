@@ -1,3 +1,6 @@
-- **SelectedENSDFDataset.txt** ENSDF dataset. Downloaded from https://www.nndc.bnl.gov/ensdf/, Nuclide A range 6-182, B- decay. Must be unpacked (see scripts/).
-- **endfb-bm.txt** ENDF/B sub-library. from Brookhaven National Laboratory. It contains TAGS data from 55 materials.
+- **SelectedENSDFDataset.txt** ENSDF dataset. Downloaded from https://www.nndc.bnl.gov/ensdf/, Nuclide A range 3-196, B- decay (08/2025). Must be unpacked (see scripts/).
+- **endfb-bm.txt** ENDF/B sub-library. from Brookhaven National Laboratory. It contains TAGS data from different materials. (see doc folder).  Each data is identified by (z,a,liso). Than the data is divided into "discreet" or "continuum". If former, end poin energy (MeV), uncertainty (MeV), intensity, uncertainty and type of transition ("a" -> allowed, "1u" first forbidden unique...). If "continuum", spectrum from CGM calculation is provided in the following form: energy, electron spectrum and antineutrino spectrum.
 - **JEFF33-nfy.txt** cumulative fission yields dataset (JEFF 3.3)
+- **JEFF40-nfy.txt** cumulative fission yields dataset (JEFF 4.0)
+- **JEFF40-decay_data.txt** decay data (JEFF 4.0)
+- **AME20.txt** AME2020 evaluation (taken from BetaShape)

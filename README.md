@@ -88,13 +88,14 @@ If you want to collaborate or report any bugs, don't esitate to cantact us! (mat
     RenShape
     │
     ├── src                            # Project source code
-    ├── scripts                        # Directory for scripts and executables
-    ├── notebook                       # Directory for tutorials
-    ├── requirements.txt               # Lists of packages to install
-    ├── data                           # Directory for data
-    ├── setup.py                       #
-    ├── .gitignore                     # Specifies intentionally untracked files to ignore
-    └── README.md                      # README file
+    ├── scripts                      # Directory for scripts and executables
+    ├── notebook                  # Directory for tutorials
+    ├── doc                           # Directory for various documentation on RenShape
+    ├── requirements.txt       # Lists of packages to install
+    ├── data                          # Directory for data
+    ├── setup.py                   #
+    ├── .gitignore                  # Specifies intentionally untracked files to ignore
+    └── README.md           # README file
 
  ASCII art tree structure taken from [here](https://codepen.io/patrickhlauke/pen/azbYWZ)
 
@@ -102,6 +103,4 @@ If you want to collaborate or report any bugs, don't esitate to cantact us! (mat
 
 http://www.lnhb.fr/home/rd-activities/spectrum-processing-software/ BetaShape and its manual.
 
-https://www.nndc.bnl.gov/ensdf/ ENSDF database
-
-https://www.oecd-nea.org/dbdata/jeff/jeff33/ JEFF 3.3 database
+https://www.nndc.bnl.gov/ensdf/ ENSDF databases
