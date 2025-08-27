@@ -417,7 +417,7 @@ class LazyReader:
             If True, all spectra are summed to return the total antineutrino spectrum. In this case, spectrum_err 
             represents the standard deviation. If False, a matrix is returned. spectrum is a matrix in which each row 
             represents an antineutrino spectrum multiplied by the corresponding CFY and fission fractions. 
-            spectrum_err contains the variance for each spectrum.
+            spectrum_err contains the standard deviation for each spectrum.
             The default is True.
         spectra : ndarray
             The matrix containing all the spectra to be combined. It should be the output of "get_nu_spectra". Default is None.
@@ -459,4 +459,5 @@ class LazyReader:
             spectrum_err = np.sum(spectra_cfy_err,axis=0)**0.5   
             return spectrum,  spectrum_err
         else:
-            return spectra_cfy, spectra_cfy_err
+            spectrum_err = spectra_cfy_err**0.5
+            return spectra_cfy, spectrum_err
