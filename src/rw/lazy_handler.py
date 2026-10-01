@@ -383,8 +383,11 @@ class LazyReader:
             BR = BR[posOK]  
             #force the normalization for the spectrum with all the information
             tags = self.get_parameters("tag")
-            pos_incomplete = np.where(posOK==np.array([np.where(tags=="ensdf_incomplete")[0]]).T)[1]      
-            pos_complete = np.uint32(np.where(np.in1d(np.arange(spectra.shape[0]),pos_incomplete,invert = True))[0])
+            pos_incomplete = np.where(posOK==np.array([np.where(tags=="ensdf_incomplete")[0]]).T)[1]
+            try:      
+                pos_complete = np.uint32(np.where(np.in1d(np.arange(spectra.shape[0]),pos_incomplete,invert = True))[0])
+            except:
+                pos_complete = np.uint32(np.where(np.isin(np.arange(spectra.shape[0]),pos_incomplete,invert = True))[0])
             
             for i in pos_complete:
                 I = integrate.simpson(spectra[i],x=energy)
