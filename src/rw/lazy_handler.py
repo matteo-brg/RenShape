@@ -370,7 +370,7 @@ class LazyReader:
             i = 0
             for p in posOK:
                 try:
-                    _, temp = self._evaluate_total_spectrum(self,p)
+                    _, temp = self._evaluate_total_spectrum(p)
                     temp = temp[:spectra.shape[1]]  
                 except:
                     #if the uncertainty is unkwnown, use the defalt_unc
